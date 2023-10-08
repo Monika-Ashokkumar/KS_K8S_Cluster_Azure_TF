@@ -28,3 +28,41 @@ variable "public_subnet_prefixes" {
   default     = ["10.0.3.0/24", "10.0.4.0/24"]
 }
 
+variable "aks_nsg_rules" {
+  description = "NSG rules for AKS"
+  default = [
+    {
+      name                   = "allow_aks_management_inbound"
+      priority               = 100
+      direction              = "Inbound"
+      access                 = "Allow"
+      protocol               = "Tcp"
+      source_port_range      = "*"
+      destination_port_range = "9000"
+      source_address_prefix  = "VirtualNetwork"
+      destination_address_prefix = "*"
+    },
+    {
+      name                   = "allow_nodeport_inbound"
+      priority               = 110
+      direction              = "Inbound"
+      access                 = "Allow"
+      protocol               = "Tcp"
+      source_port_range      = "*"
+      destination_port_range = "31898"
+      source_address_prefix  = "*"
+      destination_address_prefix = "*"
+    },
+    {
+      name                   = "allow_http_inbound"
+      priority               = 120
+      direction              = "Inbound"
+      access                 = "Allow"
+      protocol               = "Tcp"
+      source_port_range      = "*"
+      destination_port_range = "80"
+      source_address_prefix  = "*"
+      destination_address_prefix = "*"
+    },
+  ]
+}
